@@ -26,7 +26,6 @@ userController.createUser = (req, res, next) => {
   const { username, password } = req.body;
   User.create({ username, password, gamesPlayed: 0 })
     .then((response) => {
-      console.log('created a user');
       res.locals.userId = response._id;
       res.locals.username = response.username;
       res.locals.gamesPlayed = response.gamesPlayed;
@@ -45,7 +44,6 @@ userController.verifyUser = (req, res, next) => {
   User.findOne({ username })
     .then(async (response) => {
       if (response) {
-        console.log('found', response.username);
         const isMatch = await bcrypt.compare(password, response.password);
         if (isMatch) {
           res.locals.userId = response._id;

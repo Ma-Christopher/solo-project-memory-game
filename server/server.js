@@ -61,18 +61,18 @@ app.get('/', (req, res) => {
 // });
 
 app.post('/register', userController.createUser, cookieController.setSSIDCookie, (req, res) => {
-  console.log('successful registration');
+  // console.log('successful registration');
   res.send({ verified: true, username: res.locals.username, gamesPlayed: res.locals.gamesPlayed });
 });
 
 // REMOVED SESSTION FROM MIDDLEWARE sessionController.startSession,
 app.post('/login', userController.verifyUser, cookieController.setSSIDCookie, (req, res) => {
-  console.log('successful login');
+  // console.log('successful login');
   res.send({ verified: true, username: res.locals.username, gamesPlayed: res.locals.gamesPlayed });
 });
 
 app.patch('/update/:username', userController.updateUserData, (req, res) => {
-  console.log('updated users data');
+  // console.log('updated users data');
   res.send({ gamesPlayed: res.locals.gamesPlayed });
 });
 
