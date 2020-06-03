@@ -40,11 +40,13 @@ class Game extends Component {
       pick2: null,
       canClick: false,
       checkForGameOver: false,
+      gamesPlayed: 0,
+      username: '',
     };
     this.startGame = this.startGame.bind(this);
     this.flipCard = this.flipCard.bind(this);
     this.hideCard = this.hideCard.bind(this);
-    this.resetGame = this.resetGame.bind(this);
+    // this.resetGame = this.resetGame.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.checkGameOver = this.checkGameOver.bind(this);
     this.foundMatch = this.foundMatch.bind(this);
@@ -53,6 +55,10 @@ class Game extends Component {
   }
 
   componentDidMount() {
+    this.setState({
+      username: this.props.username,
+      gamesPlayed: this.props.gamesPlayed,
+    });
     this.startGame();
   }
 
@@ -73,6 +79,10 @@ class Game extends Component {
     const gameCards = generateCards(totalCards);
     this.setState({
       cards: gameCards,
+      pick1: null,
+      pick2: null,
+      canClick: false,
+      checkForGameOver: false,
     });
     setTimeout(() => this.showAll(), 5000);
   }
@@ -89,16 +99,16 @@ class Game extends Component {
     }));
   }
 
-  resetGame() {
-    this.setState(({
-      cards: [],
-      gameOver: false,
-      pick1: null,
-      pick2: null,
-      canClick: false,
-    }));
-    this.startGame();
-  }
+  // resetGame() {
+  //   this.setState(({
+  //     cards: [],
+  //     gameOver: false,
+  //     pick1: null,
+  //     pick2: null,
+  //     canClick: false,
+  //   }));
+  //   this.startGame();
+  // }
 
   handleClick(card) {
     const { canClick, pick1, pick2 } = this.state;
@@ -141,7 +151,6 @@ class Game extends Component {
     const { pick1, pick2 } = this.state;
 
     if (pick1 && pick2) {
-      console.log('checking for a match');
       if (pick1.display === pick2.display) this.foundMatch();
       else this.noMatch();
       this.setState(() => ({ pick1: null, pick2: null }));
@@ -151,21 +160,33 @@ class Game extends Component {
   checkGameOver() {
     const { cards, checkForGameOver } = this.state;
     if (!checkForGameOver) return;
-    console.log('checking for game over', cards);
     const gameOver = cards.reduce((acc, c) => {
       if (!c.hidden) return false;
       return acc;
     }, true);
     if (gameOver) {
-      alert('Game Over! You win!');
-      this.resetGame();
+      console.log(this.state.username);
+      fetch(`http://localhost:3000/update/${this.state.username}`, {
+        method: 'PATCH',
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log('data in patch req ->', data);
+          this.setState({
+            gamesPlayed: data.gamesPlayed,
+          });
+        })
+        .catch((error) => {
+          console.error('Error', error);
+        });
+
+      this.startGame();
     } else {
       this.setState(() => ({ checkForGameOver: false }));
     }
   }
 
   foundMatch() {
-    console.log('found match');
     const { pick1, pick2, cards } = this.state;
     setTimeout(() => {
       this.hideCard(pick1);
@@ -182,7 +203,6 @@ class Game extends Component {
   }
 
   noMatch() {
-    console.log('no match');
     const { pick1, pick2 } = this.state;
     setTimeout(() => {
       this.flipCard(pick1, true);
@@ -203,6 +223,10 @@ class Game extends Component {
     });
     return (
       <div className="game">
+        <div>
+          <p>Welcome, {this.state.username}! You have completed {this.state.gamesPlayed} rounds!</p>
+        </div>
+        <br />
         {cards}
       </div>
     );
