@@ -24,11 +24,14 @@ userController.getAllUsers = (req, res, next) => {
  */
 userController.createUser = (req, res, next) => {
   const { username, password } = req.body;
-  User.create({ username, password, gamesPlayed: 0 })
+  User.create({ username, password, easy: 0, normal: 0, hard: 0 })
     .then((response) => {
-      res.locals.userId = response._id;
-      res.locals.username = response.username;
-      res.locals.gamesPlayed = response.gamesPlayed;
+      // res.locals.userId = response._id;
+      // res.locals.username = response.username;
+      // res.locals.easy = response.easy;
+      // res.locals.normal = response.normal;
+      // res.locals.hard = response.hard;
+      res.locals.userData = response;
       return next();
     })
     .catch((err) => next(err));
@@ -46,9 +49,12 @@ userController.verifyUser = (req, res, next) => {
       if (response) {
         const isMatch = await bcrypt.compare(password, response.password);
         if (isMatch) {
-          res.locals.userId = response._id;
-          res.locals.username = response.username;
-          res.locals.gamesPlayed = response.gamesPlayed;
+          // res.locals.userId = response._id;
+          // res.locals.username = response.username;
+          // res.locals.easy = response.easy;
+          // res.locals.normal = response.normal;
+          // res.locals.hard = response.hard;
+          res.locals.userData = response;
           return next();
         }
       }
@@ -59,10 +65,10 @@ userController.verifyUser = (req, res, next) => {
 };
 
 userController.updateUserData = (req, res, next) => {
-  const { username } = req.params;
-  User.findOneAndUpdate({ username }, { $inc: { gamesPlayed: 1 } }, { new: true })
+  const { username, mode } = req.body;
+  User.findOneAndUpdate({ username }, { $inc: { [mode]: 1 } }, { new: true })
     .then(async (response) => {
-      res.locals.gamesPlayed = response.gamesPlayed;
+      res.locals.userData = response;
       return next();
     })
     .catch((err) => next(err));

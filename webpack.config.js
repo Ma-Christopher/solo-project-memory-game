@@ -14,6 +14,7 @@ module.exports = {
     proxy: {
       '/login': 'http://localhost:3000',
       '/register': 'http://localhost:3000',
+      '/images': 'http://localhost:3000',
     },
     hot: true,
   },
@@ -37,6 +38,19 @@ module.exports = {
           'css-loader',
           // Compiles Sass to CSS
           'sass-loader',
+        ],
+      },
+      {
+        test: /\.(png|jpg|gif|woff|woff2|eot|ttf|svg|ico)$/,
+        use: [
+          {
+            // loads files as base64 encoded data url if image file is less than set limit
+            loader: 'file-loader',
+            options: {
+              outputPath: 'images/',
+              name: '[name].[ext]',
+            },
+          },
         ],
       },
     ],

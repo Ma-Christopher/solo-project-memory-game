@@ -1,5 +1,7 @@
+/* eslint-disable react/destructuring-assignment */
 import React, { Component } from 'react';
 import Card from './Card.jsx';
+import Options from './Options.jsx';
 
 function shuffleArr(arr) {
   for (let i = arr.length - 1; i > 0; i--) {
@@ -11,17 +13,73 @@ function shuffleArr(arr) {
 
 function generateCards(numCards) {
   const cards = [];
+
+  const images = [
+    'images/001-steak.png',
+    'images/002-bowling.png',
+    'images/003-kite.png',
+    'images/004-videogames.png',
+    'images/005-shopping bag.png',
+    'images/006-spray.png',
+    'images/007-rugby ball.png',
+    'images/008-music player.png',
+    'images/009-microphone.png',
+    'images/010-backpack.png',
+    'images/011-basketball.png',
+    'images/012-beer.png',
+    'images/013-tea cup.png',
+    'images/014-drum.png',
+    'images/015-thread.png',
+    'images/016-music.png',
+    'images/017-chess piece.png',
+    'images/018-gamepad.png',
+    'images/019-origami.png',
+    'images/020-dice.png',
+    'images/021-popcorn.png',
+    'images/022-cupcake.png',
+    'images/023-flower pot.png',
+    'images/024-dumbbell.png',
+    'images/025-sewing machine.png',
+    'images/026-guitar.png',
+    'images/027-chef hat.png',
+    'images/028-telescope.png',
+    'images/029-umbrella.png',
+    'images/030-film strip.png',
+    'images/031-snorkling.png',
+    'images/032-yarn ball.png',
+    'images/033-study.png',
+    'images/034-egg.png',
+    'images/035-keyboard.png',
+    'images/036-poker cards.png',
+    'images/037-video.png',
+    'images/038-camera.png',
+    'images/039-puzzle pieces.png',
+    'images/040-painting.png',
+    'images/041-swimming.png',
+    'images/042-artist.png',
+    'images/043-archery.png',
+    'images/044-pizza.png',
+    'images/045-fishing.png',
+    'images/046-writing.png',
+    'images/047-scissors.png',
+    'images/048-camping tent.png',
+    'images/049-bicycle.png',
+    'images/050-football ball.png',
+  ];
+
+  const shuffledImages = shuffleArr(images);
+
   for (let i = 0; i < numCards; i += 2) {
     cards.push({
       id: i,
-      display: i / 2,
+      display: shuffledImages[i / 2],
       flipped: false,
       clickable: true,
       hidden: false,
     });
     cards.push({
       id: i + 1,
-      display: i / 2,
+      display: shuffledImages[i / 2],
       flipped: false,
       clickable: true,
       hidden: false,
@@ -35,18 +93,21 @@ class Game extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      showOptions: true,
+      mode: null,
       cards: [],
       pick1: null,
       pick2: null,
       canClick: false,
       checkForGameOver: false,
-      gamesPlayed: 0,
+      easy: 0,
+      normal: 0,
+      hard: 0,
       username: '',
     };
     this.startGame = this.startGame.bind(this);
     this.flipCard = this.flipCard.bind(this);
     this.hideCard = this.hideCard.bind(this);
-    // this.resetGame = this.resetGame.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.checkGameOver = this.checkGameOver.bind(this);
     this.foundMatch = this.foundMatch.bind(this);
@@ -57,9 +118,11 @@ class Game extends Component {
   componentDidMount() {
     this.setState({
       username: this.props.username,
-      gamesPlayed: this.props.gamesPlayed,
+      easy: this.props.easy,
+      normal: this.props.normal,
+      hard: this.props.hard,
     });
-    this.startGame();
+    // this.startGame();
   }
 
   componentDidUpdate() {
@@ -68,16 +131,22 @@ class Game extends Component {
   }
 
   startGame(difficulty) {
-    let totalCards = 10;
-    // if (difficulty === 'easy') {
-    //   totalCards = 18;
-    // } else if (difficulty === 'normal') {
-    //   totalCards = 24;
-    // } else {
-    //   totalCards = 30;
-    // }
+    let totalCards;
+    let mode;
+    if (difficulty === 'easy') {
+      totalCards = 6;
+      mode = 'easy';
+    } else if (difficulty === 'normal') {
+      totalCards = 12;
+      mode = 'normal';
+    } else {
+      totalCards = 18;
+      mode = 'hard';
+    }
     const gameCards = generateCards(totalCards);
     this.setState({
+      showOptions: false,
+      mode,
       cards: gameCards,
       pick1: null,
       pick2: null,
@@ -98,17 +167,6 @@ class Game extends Component {
       cards: newCards,
     }));
   }
-
-  // resetGame() {
-  //   this.setState(({
-  //     cards: [],
-  //     gameOver: false,
-  //     pick1: null,
-  //     pick2: null,
-  //     canClick: false,
-  //   }));
-  //   this.startGame();
-  // }
 
   handleClick(card) {
     const { canClick, pick1, pick2 } = this.state;
@@ -166,21 +224,33 @@ class Game extends Component {
     }, true);
     if (gameOver) {
       console.log(this.state.username);
-      fetch(`http://localhost:3000/update/${this.state.username}`, {
+      fetch('http://localhost:3000/update/', {
         method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: this.state.username,
+          mode: this.state.mode,
+        }),
       })
         .then((response) => response.json())
         .then((data) => {
-          console.log('data in patch req ->', data);
+          const { easy, normal, hard } = data.userData;
           this.setState({
-            gamesPlayed: data.gamesPlayed,
+            easy,
+            normal,
+            hard,
           });
         })
         .catch((error) => {
           console.error('Error', error);
         });
 
-      this.startGame();
+      this.setState({
+        checkForGameOver: false,
+        showOptions: true,
+      });
     } else {
       this.setState(() => ({ checkForGameOver: false }));
     }
@@ -223,11 +293,13 @@ class Game extends Component {
     });
     return (
       <div className="game">
-        <div>
-          <p>Welcome, {this.state.username}! You have completed {this.state.gamesPlayed} rounds!</p>
+        <div className="scoreboard">
+          <p>Hello, {this.state.username}! You have completed {this.state.easy} easy games, {this.state.normal} normal games, and {this.state.hard} hard games!</p>
         </div>
-        <br />
-        {cards}
+        {this.state.showOptions && <Options startGame={this.startGame} />}
+        <div className="card-field">
+          {cards}
+        </div>
       </div>
     );
   }

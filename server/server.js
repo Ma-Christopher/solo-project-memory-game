@@ -10,7 +10,6 @@ dotenv.config({ path: './config/config.env' });
 
 const userController = require('./controllers/userController');
 const cookieController = require('./controllers/cookieController');
-const sessionController = require('./controllers/sessionController');
 
 const app = express();
 
@@ -50,6 +49,7 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 
 app.use('/build', express.static(path.join(__dirname, '../build')));
+app.use('/images', express.static(path.join(__dirname, '../build/images')));
 
 // serve index.html on the route '/'
 app.get('/', (req, res) => {
@@ -62,18 +62,18 @@ app.get('/', (req, res) => {
 
 app.post('/register', userController.createUser, cookieController.setSSIDCookie, (req, res) => {
   // console.log('successful registration');
-  res.send({ verified: true, username: res.locals.username, gamesPlayed: res.locals.gamesPlayed });
+  res.send({ verified: true, userData: res.locals.userData });
 });
 
 // REMOVED SESSTION FROM MIDDLEWARE sessionController.startSession,
 app.post('/login', userController.verifyUser, cookieController.setSSIDCookie, (req, res) => {
   // console.log('successful login');
-  res.send({ verified: true, username: res.locals.username, gamesPlayed: res.locals.gamesPlayed });
+  res.send({ verified: true, userData: res.locals.userData });
 });
 
-app.patch('/update/:username', userController.updateUserData, (req, res) => {
+app.patch('/update', userController.updateUserData, (req, res) => {
   // console.log('updated users data');
-  res.send({ gamesPlayed: res.locals.gamesPlayed });
+  res.send({ userData: res.locals.userData });
 });
 
 // 404 handler

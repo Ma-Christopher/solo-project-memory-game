@@ -5,6 +5,9 @@ import Game from './components/Game.jsx';
 import Register from './components/Register.jsx';
 import Nav from './components/Nav.jsx';
 
+function requireAll(r) { r.keys().forEach(r); }
+requireAll(require.context('./assets/images', true, /\.(png|jpg|gif|woff|woff2|eot|ttf|svg|ico)$/));
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -15,7 +18,9 @@ class App extends Component {
       showGame: false,
       username: '',
       password: '',
-      gamesPlayed: 0,
+      easy: 0,
+      normal: 0,
+      hard: 0,
     };
 
     this.onChange = this.onChange.bind(this);
@@ -26,7 +31,6 @@ class App extends Component {
   }
 
   onChange(event) {
-    console.log('handling change');
     this.setState({
       [event.target.name]: event.target.value,
     });
@@ -47,11 +51,14 @@ class App extends Component {
       .then((response) => response.json())
       .then((data) => {
         if (data.verified) {
+          const { username, easy, normal, hard } = data.userData;
           this.setState({
             showGame: true,
             showLogin: false,
-            username: data.username,
-            gamesPlayed: data.gamesPlayed,
+            username,
+            easy,
+            normal,
+            hard,
           });
         }
       })
@@ -75,12 +82,15 @@ class App extends Component {
       .then((response) => response.json())
       .then((data) => {
         if (data.verified) {
-          this.setState(() => ({
+          const { username, easy, normal, hard } = data.userData;
+          this.setState({
             showGame: true,
             showRegister: false,
-            username: data.username,
-            gamesPlayed: data.gamesPlayed,
-          }));
+            username,
+            easy,
+            normal,
+            hard,
+          });
         }
       })
       .catch((error) => {
@@ -89,22 +99,24 @@ class App extends Component {
   }
 
   showLogin() {
-    this.setState({ showLogin: true, showRegister: false, showGame: false, username: '', gamesPlayed: 0 });
+    this.setState({ showLogin: true, showRegister: false, showGame: false, username: '', easy: 0, normal: 0, hard: 0 });
   }
 
   showRegister() {
-    this.setState({ showLogin: false, showRegister: true, showGame: false, username: '', gamesPlayed: 0 });
+    this.setState({ showLogin: false, showRegister: true, showGame: false, username: '', easy: 0, normal: 0, hard: 0 });
   }
 
   render() {
-    const { showLogin, showRegister, showGame, username, gamesPlayed } = this.state;
+    const { showLogin, showRegister, showGame, username, easy, normal, hard } = this.state;
     return (
       <div className="App">
-        <h1>Memory Game</h1>
-        <Nav showLogin={this.showLogin} showRegister={this.showRegister} />
-        { showLogin && <Login handleLogin={this.handleLogin} onChange={this.onChange} /> }
-        { showRegister && <Register handleRegister={this.handleRegister} onChange={this.onChange} /> }
-        { showGame && <Game gamesPlayed={gamesPlayed} username={username} /> }
+        <div>
+          <Nav showLogin={this.showLogin} showRegister={this.showRegister} />
+          { showLogin && <Login handleLogin={this.handleLogin} onChange={this.onChange} /> }
+          { showRegister && <Register handleRegister={this.handleRegister} onChange={this.onChange} /> }
+          { showGame && <Game easy={easy} normal={normal} hard={hard} username={username} /> }
+        </div>
+        <div className="bottom">Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
       </div>
     );
   }

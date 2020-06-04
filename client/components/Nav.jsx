@@ -3,9 +3,10 @@ import React, { Component } from 'react';
 
 const Nav = (props) => {
   return (
-    <div>
-      <button type="button" onClick={props.showLogin}>Go to login!</button>
-      <button type="button" onClick={props.showRegister}>Create an account!</button>
+    <div className="nav">
+      <h1>Memory Game</h1>
+      <div className="nav-div" onClick={props.showLogin}>Go to login!</div>
+      <div className="nav-div" onClick={props.showRegister}>Create an account!</div>
     </div>
   );
 };

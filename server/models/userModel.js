@@ -7,7 +7,9 @@ const bcrypt = require('bcryptjs');
 const userSchema = new Schema({
   username: { type: String, required: [true, 'Please provide a username'], unique: true },
   password: { type: String, required: [true, 'Please provide a password'] },
-  gamesPlayed: { type: Number },
+  easy: { type: Number },
+  normal: { type: Number },
+  hard: { type: Number },
 });
 
 userSchema.pre('save', function (next) {
