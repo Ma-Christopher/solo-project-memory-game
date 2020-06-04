@@ -110,7 +110,7 @@ class App extends Component {
     const { showLogin, showRegister, showGame, username, easy, normal, hard } = this.state;
     return (
       <div className="App">
-        <div>
+        <div className="main">
           <Nav showLogin={this.showLogin} showRegister={this.showRegister} />
           { showLogin && <Login handleLogin={this.handleLogin} onChange={this.onChange} /> }
           { showRegister && <Register handleRegister={this.handleRegister} onChange={this.onChange} /> }
