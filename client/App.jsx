@@ -21,6 +21,7 @@ class App extends Component {
       easy: 0,
       normal: 0,
       hard: 0,
+      errorMsg: '',
     };
 
     this.onChange = this.onChange.bind(this);
@@ -59,6 +60,11 @@ class App extends Component {
             easy,
             normal,
             hard,
+            errorMsg: '',
+          });
+        } else {
+          this.setState({
+            errorMsg: data.errorMsg,
           });
         }
       })
@@ -91,6 +97,10 @@ class App extends Component {
             normal,
             hard,
           });
+        } else {
+          this.setState({
+            errorMsg: data.errorMsg,
+          });
         }
       })
       .catch((error) => {
@@ -99,11 +109,11 @@ class App extends Component {
   }
 
   showLogin() {
-    this.setState({ showLogin: true, showRegister: false, showGame: false, username: '', easy: 0, normal: 0, hard: 0 });
+    this.setState({ showLogin: true, showRegister: false, showGame: false, username: '', password: '', easy: 0, normal: 0, hard: 0, errorMsg: '' });
   }
 
   showRegister() {
-    this.setState({ showLogin: false, showRegister: true, showGame: false, username: '', easy: 0, normal: 0, hard: 0 });
+    this.setState({ showLogin: false, showRegister: true, showGame: false, username: '', password: '', easy: 0, normal: 0, hard: 0, errorMsg: '' });
   }
 
   render() {
@@ -112,9 +122,9 @@ class App extends Component {
       <div className="App">
         <div className="main">
           <Nav showLogin={this.showLogin} showRegister={this.showRegister} />
-          { showLogin && <Login handleLogin={this.handleLogin} onChange={this.onChange} /> }
-          { showRegister && <Register handleRegister={this.handleRegister} onChange={this.onChange} /> }
-          { showGame && <Game easy={easy} normal={normal} hard={hard} username={username} /> }
+          { showLogin && <Login handleLogin={this.handleLogin} onChange={this.onChange} errorMsg={this.state.errorMsg} /> }
+          { showRegister && <Register handleRegister={this.handleRegister} onChange={this.onChange} errorMsg={this.state.errorMsg} /> }
+          { showGame && <Game easy={easy} normal={normal} hard={hard} username={username} showLogin={this.showLogin} /> }
         </div>
         <div className="bottom">Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
       </div>

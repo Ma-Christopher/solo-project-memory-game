@@ -1,5 +1,13 @@
+/*
+* Prefixed by https://autoprefixer.github.io
+* PostCSS: v7.0.29,
+* Autoprefixer: v9.7.6
+* Browsers: last 4 version
+*/
+
 * {
-  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
@@ -18,30 +26,58 @@ a {
 
 .app {
   height: 100vh;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
 .main {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
 .login {
   text-align: center;
   width: 15em;
   background: #f1c40f;
-  box-shadow: 0px 0px 10px 2px rgba(0,0,0,0.5);
+  -webkit-box-shadow: 0px 0px 10px 2px rgba(0,0,0,0.5);
+          box-shadow: 0px 0px 10px 2px rgba(0,0,0,0.5);
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   padding: 10px 10px;
 
   input {
     margin-bottom: 10px;
+  }
+
+  p {
+    color: red;
   }
 }
 
@@ -49,14 +85,26 @@ a {
   text-align: center;
   width: 15em;
   background: #f1c40f;
-  box-shadow: 0px 0px 10px 2px rgba(0,0,0,0.5);
+  -webkit-box-shadow: 0px 0px 10px 2px rgba(0,0,0,0.5);
+          box-shadow: 0px 0px 10px 2px rgba(0,0,0,0.5);
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   padding: 10px 10px;
 
   input {
     margin-bottom: 10px;
+  }
+
+  p {
+    color: red;
   }
 }
 
@@ -65,13 +113,23 @@ a {
 }
 
 .game {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 
   .scoreboard {
-    box-shadow: 0px 0px 10px 2px rgba(0,0,0,0.5);
+    -webkit-box-shadow: 0px 0px 10px 2px rgba(0,0,0,0.5);
+            box-shadow: 0px 0px 10px 2px rgba(0,0,0,0.5);
     background: #3498db;
     padding: 10px 10px;
     margin-bottom: 10px;
@@ -79,9 +137,22 @@ a {
 
   .options {
     .gameOption {
+      cursor: pointer;
       display: inline-block;
-      box-shadow: 0px 0px 10px 2px rgba(0,0,0,0.5);
+      -webkit-box-shadow: 0px 0px 10px 2px rgba(0,0,0,0.5);
+              box-shadow: 0px 0px 10px 2px rgba(0,0,0,0.5);
       background: #e74c3c;
+      padding: 10px 10px;
+      margin: 10px;
+    }
+
+    .deleteAcct {
+      cursor: pointer;
+      display: inline-block;
+      -webkit-box-shadow: 0px 0px 10px 2px rgba(0,0,0,0.5);
+              box-shadow: 0px 0px 10px 2px rgba(0,0,0,0.5);
+      background: #2c3e50;
+      color: #c0392b;
       padding: 10px 10px;
       margin: 10px;
     }
@@ -89,18 +160,26 @@ a {
 }
 
 .card-field {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  width: 90vw;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  width: 85vw;
 }
 
 .card-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
   height: 20vh;
   width: 20vh;
   position: relative;
-  perspective: 500px;
+  -webkit-perspective: 500px;
+          perspective: 500px;
   border-radius: 10px;
   margin: 10px;
 }
@@ -109,18 +188,24 @@ a {
   height: 100%;
   width: 100%;
   position: relative;
-	transition: all .8s ease;
-	transform-style: preserve-3d;
+  -webkit-transition: all .8s ease;
+  -o-transition: all .8s ease;
+  transition: all .8s ease;
+	-webkit-transform-style: preserve-3d;
+	        transform-style: preserve-3d;
   border: 2px solid black;
   border-radius: 10px;
-  box-shadow: 0px 0px 10px 2px rgba(0,0,0,0.5);
+  opacity: 1;
+  -webkit-box-shadow: 0px 0px 10px 2px rgba(0,0,0,0.5);
+          box-shadow: 0px 0px 10px 2px rgba(0,0,0,0.5);
 
   .card-front {
     height: 100%;
     width: 100%;
     background: white;
     position: absolute;
-    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
     border-radius: 10px;
 
     img {
@@ -132,27 +217,32 @@ a {
       left: 0;
       right: 0;
       bottom: 0;
-      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+              backface-visibility: hidden;
     }
   }
 
   .card-back {
     height: 100%;
     width: 100%;
+    background: -o-linear-gradient(45deg, #ecf0f1, #242527);
     background: linear-gradient(45deg, #ecf0f1, #242527);
-		transform: rotateY(180deg);
+		-webkit-transform: rotateY(180deg);
+		        transform: rotateY(180deg);
     position: absolute;
-    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
     border-radius: 10px;
   }
 }
 
 .card-flipped {
-  transform: rotateY(180deg);
+  -webkit-transform: rotateY(180deg);
+          transform: rotateY(180deg);
 }
 
 .card-hidden {
-  display: none;
+  opacity: 0;
 }
 
 .nav {
@@ -160,7 +250,8 @@ a {
   margin-bottom: 10px;
 
   .title {
-    box-shadow: 0px 0px 10px 2px rgba(0,0,0,0.5);
+    -webkit-box-shadow: 0px 0px 10px 2px rgba(0,0,0,0.5);
+            box-shadow: 0px 0px 10px 2px rgba(0,0,0,0.5);
     background: #9b59b6;
     padding: 10px 10px;
     width: 90vw;
@@ -172,10 +263,12 @@ a {
   }
 
   .nav-div {
+    width: 10em;
     display: inline-block;
     padding: 10px 10px;
     margin: 0px 10px;
-    box-shadow: 0px 0px 10px 2px rgba(0,0,0,0.5);
+    -webkit-box-shadow: 0px 0px 10px 2px rgba(0,0,0,0.5);
+            box-shadow: 0px 0px 10px 2px rgba(0,0,0,0.5);
     background: #2ecc71;
     cursor: pointer;
   }

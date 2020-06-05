@@ -113,6 +113,7 @@ class Game extends Component {
     this.foundMatch = this.foundMatch.bind(this);
     this.noMatch = this.noMatch.bind(this);
     this.showAll = this.showAll.bind(this);
+    this.deleteAcct = this.deleteAcct.bind(this);
   }
 
   componentDidMount() {
@@ -223,7 +224,6 @@ class Game extends Component {
       return acc;
     }, true);
     if (gameOver) {
-      console.log(this.state.username);
       fetch('http://localhost:3000/update/', {
         method: 'PATCH',
         headers: {
@@ -247,10 +247,8 @@ class Game extends Component {
           console.error('Error', error);
         });
 
-      this.setState({
-        checkForGameOver: false,
-        showOptions: true,
-      });
+      this.setState({ checkForGameOver: false });
+      setTimeout(() => this.setState({ showOptions: true }), 1000);
     } else {
       this.setState(() => ({ checkForGameOver: false }));
     }
@@ -281,6 +279,24 @@ class Game extends Component {
     this.setState(() => ({ pick1: null, pick2: null }));
   }
 
+  deleteAcct() {
+    console.log('deleteAcct called');
+    fetch('http://localhost:3000/delete', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ username: this.state.username }),
+    })
+      .then((response) => response.json())
+      .then(() => {
+        this.props.showLogin();
+      })
+      .catch((error) => {
+        console.error('Error', error);
+      });
+  }
+
   render() {
     const cards = this.state.cards.map((card) => {
       return (
@@ -296,7 +312,7 @@ class Game extends Component {
         <div className="scoreboard">
           <p>Hello, {this.state.username}! You have completed {this.state.easy} easy games, {this.state.normal} normal games, and {this.state.hard} hard games!</p>
         </div>
-        {this.state.showOptions && <Options startGame={this.startGame} />}
+        {this.state.showOptions && <Options startGame={this.startGame} deleteAcct={this.deleteAcct} />}
         <div className="card-field">
           {cards}
         </div>

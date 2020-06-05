@@ -34,7 +34,13 @@ userController.createUser = (req, res, next) => {
       res.locals.userData = response;
       return next();
     })
-    .catch((err) => next(err));
+    .catch((err) => {
+      if (err.code === 11000) {
+        res.send({ verified: false, errorMsg: 'Sorry, username is taken.' });
+      } else {
+        return next(err);
+      }
+    });
 };
 
 /**
@@ -59,7 +65,7 @@ userController.verifyUser = (req, res, next) => {
         }
       }
       // invalid login
-      res.send({ verified: false, username: response.username });
+      res.send({ verified: false, errorMsg: 'Invalid username or password.' });
     })
     .catch((err) => next(err));
 };
@@ -69,6 +75,14 @@ userController.updateUserData = (req, res, next) => {
   User.findOneAndUpdate({ username }, { $inc: { [mode]: 1 } }, { new: true })
     .then(async (response) => {
       res.locals.userData = response;
+      return next();
+    })
+    .catch((err) => next(err));
+};
+
+userController.deleteUser = (req, res, next) => {
+  User.findOneAndDelete({ username: req.body.username })
+    .then((response) => {
       return next();
     })
     .catch((err) => next(err));

@@ -11,6 +11,7 @@ const Login = (props) => {
         <input type="password" name="password" placeholder="password" value={props.password} onChange={props.onChange} required />
         <br />
         <button type="submit">Login</button>
+        <p>{props.errorMsg}</p>
       </form>
     </div>
   );

@@ -76,6 +76,10 @@ app.patch('/update', userController.updateUserData, (req, res) => {
   res.send({ userData: res.locals.userData });
 });
 
+app.delete('/delete', userController.deleteUser, (req, res) => {
+  res.send({ deleted: true });
+});
+
 // 404 handler
 app.use('*', (req, res) => {
   res.status(404).send('404 Page Not Found');
